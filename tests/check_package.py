@@ -20,6 +20,8 @@ assert "category = CATEGORY" not in source
 for fluid in ("se-space-coolant-cold", "se-space-coolant-hot"):
     assert fluid in source
 assert "local HOT = \"se-space-coolant\"" not in source
+assert (MOD / "thumbnail.png").exists(), "Mod portal thumbnail.png is missing"
+assert (MOD / "LICENSE").exists(), "Package license is missing"
 for lang in ("en", "ru"):
     text = (MOD / "locale" / lang / "locale.cfg").read_text(encoding="utf-8")
     assert "[mod-name]" in text
@@ -31,7 +33,8 @@ package = ROOT / "dist" / f"{folder}.zip"
 with ZipFile(package) as z:
     names = z.namelist()
     for required in ("info.json", "settings.lua", "data-final-fixes.lua",
-                     "locale/ru/locale.cfg", "locale/en/locale.cfg"):
+                     "locale/ru/locale.cfg", "locale/en/locale.cfg",
+                     "thumbnail.png", "LICENSE"):
         assert f"{folder}/{required}" in names
     assert json.loads(z.read(f"{folder}/info.json")) == info
 print(f"OK: {package} ({package.stat().st_size} bytes; {len(names)} files)")
