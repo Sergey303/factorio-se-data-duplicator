@@ -1,0 +1,13 @@
+{
+  "name": "se-data-duplicator",
+  "version": "0.1.1",
+  "title": "SE Data Duplicator",
+  "author": "Sergey303",
+  "factorio_version": "2.1",
+  "description": "Copy Space Exploration data cards in supercomputers using cold thermofluid. Copies can fail and yield junk cards.",
+  "dependencies": [
+    "base >= 2.1.0",
+    "space-exploration >= 0.7.64",
+    "? space-exploration-postprocess"
+  ]
+}

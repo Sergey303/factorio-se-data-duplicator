@@ -25,7 +25,7 @@ luac.out
 *.def
 *.exp
 
-# Shared objects (inc. Windows DLLs)
+# Shared objects
 *.dll
 *.so
 *.so.*
@@ -38,3 +38,8 @@ luac.out
 *.i*86
 *.x86_64
 *.hex
+
+# Generated files
+dist/
+__pycache__/
+*.pyc

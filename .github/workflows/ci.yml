@@ -1,0 +1,26 @@
+name: Check mod
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Lua runtime
+        run: sudo apt-get update && sudo apt-get install -y liblua5.4-0
+      - name: Run generator tests
+        run: python3 tests/run_mock_tests.py
+      - name: Build addon zip
+        run: python3 tools/package_mod.py
+      - name: Validate addon zip
+        run: python3 tests/check_package.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: se-data-duplicator
+          path: dist/*.zip
