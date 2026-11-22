@@ -104,13 +104,18 @@ for name, recipe in pairs(data.raw.recipe) do
     assert(math.abs(total_bad - failure/100) < 1e-9)
   end
 end
-assert(generated == (probes and 4 or 3))
-assert(data.raw.recipe[prefix .. "se-significant-data"])
+assert(generated == (probes and 3 or 2))
+-- Significant data remains an original SE research item but is never copied.
+assert(not data.raw.recipe[prefix .. "se-significant-data"])
+assert(data.raw.recipe["se-significant-data"])
+assert(data.raw.recipe["se-significant-data"].results[1].amount == 4)
 assert(not data.raw.recipe[prefix .. "se-empty-data"])
 assert(not data.raw.recipe[prefix .. "se-broken-data"])
 assert(not data.raw.recipe[prefix .. "se-junk-data"])
 assert(not data.raw.recipe[prefix .. "se-data-storage-substrate"])
 assert(data.raw.recipe[prefix .. "se-atomic-data"].icons[1].icon == "e")
+assert(data.raw.recipe[prefix .. "se-rhga-data"])
+assert(data.raw.recipe[prefix .. "se-star-probe-data"] ~= nil == probes)
 
 local function tech_contains(tech, recipe)
   for _, effect in ipairs(data.raw.technology[tech].effects or {}) do
@@ -118,7 +123,8 @@ local function tech_contains(tech, recipe)
   end
   return false
 end
-assert(tech_contains("se-space-catalogue-material-1", prefix .. "se-significant-data"))
+assert(not tech_contains("se-space-catalogue-material-1", prefix .. "se-significant-data"))
+assert(tech_contains("se-space-catalogue-material-1", "se-significant-data"))
 assert(tech_contains("se-space-catalogue-energy-2", prefix .. "se-atomic-data"))
 assert(tech_contains("se-space-catalogue-energy-3", prefix .. "se-atomic-data"))
 assert(tech_contains("se-space-supercomputer-1", prefix .. "se-rhga-data"))

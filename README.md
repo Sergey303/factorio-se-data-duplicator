@@ -5,11 +5,17 @@ An optional Space Exploration addon for **Factorio 2.1 / SE 0.7.64+**.
 **GitHub repository:** https://github.com/Sergey303/factorio-se-data-duplicator  
 **Factorio mod ID:** `se-data-duplicator`
 
-**Status:** 0.1.2 fixes the output thermofluid prototype in 0.1.1; Factorio game-level testing remains pending.
+**Status:** 0.1.3 excludes Significant data from duplication. A player has confirmed that at least one regular copying recipe worked in Factorio; the complete card set remains unverified in-game.
+
+## Changes in 0.1.3
+
+- Exclude **Significant data** (`se-significant-data`) from recipe generation and technology unlock injection; its original Space Exploration production remains unchanged.
+- Keep normal cards, probe cards, coolant and failure settings unchanged.
+- Expand regression assertions so tests fail if Significant data becomes copyable again.
 
 ## Recipe
 
-Every discovered item whose prototype name matches `se-*-data` (except empty/junk/broken data) gets a copying recipe:
+Every discovered item whose prototype name matches `se-*-data` (except empty/junk/broken/**Significant data**) gets a copying recipe:
 
 - **Inputs**: 1 data card of the selected type + 1 `se-empty-data` + 10 `se-space-coolant-cold` (-100°C).
 - **Outputs**: 90% chance of **2 cards of the same type**, OR 10% chance of **2 `se-junk-data`**. Additionally, **10 `se-space-coolant-hot` (+25°C)** are **always** returned.
@@ -28,23 +34,23 @@ The failure roll uses Factorio 2.1's `shared_probability` on mutually exclusive 
 | Coolant per copy | 10 units | 1–1000 |
 | Include probe data | Yes | On/off |
 
-One recipe is added for each matching filled-card **item prototype**, not for each alternative production recipe. `se-significant-data` is treated like any other card. If an original recipe has technology unlocks, those technologies also unlock the copy recipe. Cards with no matching unlock use late fallback technologies (counted in `factorio-current.log`).
+One recipe is added for each matching filled-card **item prototype**, not for each alternative production recipe. `se-significant-data` is **deliberately not copied**: it is an unusually valuable resource that would make the addon unbalanced. If an original recipe has technology unlocks, those technologies also unlock the copy recipe. Cards with no matching unlock use late fallback technologies (counted in `factorio-current.log`).
 
 ### Install
 
-Put `se-data-duplicator_0.1.2.zip` into your Factorio `mods` directory. It contains the required root folder `se-data-duplicator_0.1.2/`. Keep the required Space Exploration dependencies installed. Enable the mod and restart Factorio after changing startup settings.
+Put `se-data-duplicator_0.1.3.zip` into your Factorio `mods` directory. It contains the required root folder `se-data-duplicator_0.1.3/`. Keep the required Space Exploration dependencies installed. Enable the mod and restart Factorio after changing startup settings.
 
 ### Compatibility and test status
 
 - Static and mocked-prototype checks are provided in `tests/`.
-- **Actual Factorio + SE game loading and crafting have not yet been performed**. The mod should be treated as a first integration candidate until that test passes.
+- **Game-level report:** a user has confirmed a regular data-card copying recipe worked in Factorio. This is not exhaustive verification of every card, machine and unlock.
 - Compatibility applies to the named 2.1 / SE 0.7.x family; **SE 0.6 with Factorio 1.1 is not supported**.
 - A new SE item ending in `-data` is auto-detected. Items without source recipe unlocks use the latest catalogue as a conservative fallback; this should be checked after every SE update.
 
 ### Maintainer test checklist
 
 1. Run with Factorio 2.1 and SE 0.7.64+; inspect `factorio-current.log` for generated recipe count and fallback warnings.
-2. Check that `se-significant-data` has exactly one copying recipe, and junk/broken/empty cards do not.
+2. Check that `se-significant-data` has **no** copying recipe (its normal SE recipes remain untouched), and junk/broken/empty cards do not.
 3. Check unlocks in a clean save and a save with researched technologies.
 4. Verify each of the 4 supercomputers can select the new recipe and accept/return fluids on the right ports.
 5. Run 10,000 crafts at 10% failure, expecting failure count near 1,000 (statistical variation permitted).

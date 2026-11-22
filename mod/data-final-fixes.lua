@@ -11,6 +11,7 @@ local REQUIRED_MACHINES = {
 }
 local EMPTY = "se-empty-data"
 local JUNK = "se-junk-data"
+local SIGNIFICANT = "se-significant-data" -- high-value research data must not be duplicated
 local COLD = "se-space-coolant-cold"  -- -100 C, distinct fluid prototype in SE
 local HOT = "se-space-coolant-hot"    -- +25 C, named "hot" in the SE prototype
 
@@ -69,6 +70,7 @@ local function is_data_card(item_name)
   return item_name:match("^se%-.+%-data$") ~= nil
       and item_name ~= EMPTY
       and item_name ~= JUNK
+      and item_name ~= SIGNIFICANT
       and item_name ~= "se-broken-data"
 end
 
