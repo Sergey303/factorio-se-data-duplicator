@@ -5,14 +5,14 @@ An optional Space Exploration addon for **Factorio 2.1 / SE 0.7.64+**.
 **GitHub repository:** https://github.com/Sergey303/factorio-se-data-duplicator  
 **Factorio mod ID:** `se-data-duplicator`
 
-**Status:** integration candidate; Factorio game-level testing remains pending.
+**Status:** 0.1.2 fixes the output thermofluid prototype in 0.1.1; Factorio game-level testing remains pending.
 
 ## Recipe
 
 Every discovered item whose prototype name matches `se-*-data` (except empty/junk/broken data) gets a copying recipe:
 
 - **Inputs**: 1 data card of the selected type + 1 `se-empty-data` + 10 `se-space-coolant-cold` (-100°C).
-- **Outputs**: 90% chance of **2 cards of the same type**, OR 10% chance of **2 `se-junk-data`**. Additionally, **10 `se-space-coolant` (+25°C)** are **always** returned.
+- **Outputs**: 90% chance of **2 cards of the same type**, OR 10% chance of **2 `se-junk-data`**. Additionally, **10 `se-space-coolant-hot` (+25°C)** are **always** returned.
 - **Default duration**: 5 seconds at speed 1.
 - **Machines**: SE Supercomputers 1–4 only.
 - **No productivity, quality upgrades or recycling** for copying recipes.
@@ -32,7 +32,7 @@ One recipe is added for each matching filled-card **item prototype**, not for ea
 
 ### Install
 
-Put `se-data-duplicator_0.1.1.zip` into your Factorio `mods` directory. It contains the required root folder `se-data-duplicator_0.1.1/`. Keep the required Space Exploration dependencies installed. Enable the mod and restart Factorio after changing startup settings.
+Put `se-data-duplicator_0.1.2.zip` into your Factorio `mods` directory. It contains the required root folder `se-data-duplicator_0.1.2/`. Keep the required Space Exploration dependencies installed. Enable the mod and restart Factorio after changing startup settings.
 
 ### Compatibility and test status
 

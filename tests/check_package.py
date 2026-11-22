@@ -15,8 +15,9 @@ source = (MOD / "data-final-fixes.lua").read_text(encoding="utf-8")
 assert "shared_probability" in source
 assert "categories = {CATEGORY}" in source
 assert "category = CATEGORY" not in source
-for fluid in ("se-space-coolant-cold", "se-space-coolant"):
+for fluid in ("se-space-coolant-cold", "se-space-coolant-hot"):
     assert fluid in source
+assert "local HOT = \"se-space-coolant\"" not in source
 for lang in ("en", "ru"):
     text = (MOD / "locale" / lang / "locale.cfg").read_text(encoding="utf-8")
     assert "[mod-name]" in text

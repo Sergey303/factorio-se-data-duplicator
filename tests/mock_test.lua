@@ -27,7 +27,7 @@ data = {
     },
     fluid = {
       ["se-space-coolant-cold"] = {default_temperature = -100},
-      ["se-space-coolant"] = {default_temperature = 25}
+      ["se-space-coolant-hot"] = {default_temperature = 25}
     },
     ["recipe-category"] = {},
     ["assembling-machine"] = machines,
@@ -81,7 +81,7 @@ for name, recipe in pairs(data.raw.recipe) do
     assert(recipe.ingredients[2].name == "se-empty-data")
     assert(recipe.ingredients[3].name == "se-space-coolant-cold")
     assert(recipe.ingredients[3].temperature == -100)
-    assert(recipe.results[1].name == "se-space-coolant" and recipe.results[1].temperature == 25)
+    assert(recipe.results[1].name == "se-space-coolant-hot" and recipe.results[1].temperature == 25)
     assert(recipe.results[1].amount == 10)
     assert(recipe.allow_productivity == false and recipe.allow_quality == false)
     assert(recipe.auto_recycle == false)

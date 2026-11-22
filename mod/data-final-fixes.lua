@@ -12,7 +12,7 @@ local REQUIRED_MACHINES = {
 local EMPTY = "se-empty-data"
 local JUNK = "se-junk-data"
 local COLD = "se-space-coolant-cold"  -- -100 C, distinct fluid prototype in SE
-local HOT = "se-space-coolant"        -- +25 C, distinct fluid prototype in SE
+local HOT = "se-space-coolant-hot"    -- +25 C, named "hot" in the SE prototype
 
 local function setting(name)
   return settings.startup[name].value
@@ -28,7 +28,8 @@ end
 
 require_item(EMPTY)
 require_item(JUNK)
-check(data.raw.fluid and data.raw.fluid[COLD] and data.raw.fluid[HOT], "Missing SE thermofluid prototype(s)")
+check(data.raw.fluid and data.raw.fluid[COLD], "Missing SE thermofluid: " .. COLD)
+check(data.raw.fluid and data.raw.fluid[HOT], "Missing SE thermofluid: " .. HOT)
 check(data.raw["assembling-machine"], "Missing assembling-machine prototypes")
 for _, machine_name in ipairs(REQUIRED_MACHINES) do
   check(data.raw["assembling-machine"][machine_name], "Missing SE supercomputer: " .. machine_name)
