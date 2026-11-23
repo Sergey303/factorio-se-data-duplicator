@@ -71,4 +71,5 @@ with ZipFile(package) as z:
         assert f"{folder}/{required}" in z.namelist(), required
     assert json.loads(z.read(f"{folder}/info.json")) == info
     assert z.testzip() is None
+    assert all(m.date_time == (1980, 1, 1, 0, 0, 0) for m in z.infolist()), "Package must be reproducible"
 print(f"PASS: {package} ({package.stat().st_size} bytes; 81 audited cards, 10 files)")
