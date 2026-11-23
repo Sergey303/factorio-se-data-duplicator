@@ -55,12 +55,25 @@ def catalogue_unlocks(source: str) -> dict[str, list[str]]:
     pattern = r'name\s*=\s*data_util\.mod_prefix\s*\.\.\s*"((?:space-catalogue-(?:astronomic|biological|energy|material)|deep-catalogue)-[1-4])"'
     for match in re.finditer(pattern, source):
         technology = "se-" + match.group(1)
-        # All catalogue technologies in SE 0.7.64 put effects before icons.
+        # Read the balanced Lua effects table (not an arbitrary line window).
         remainder = source[match.end():]
-        boundary = remainder.find("icons =")
-        if boundary < 0 or boundary > 1800:
-            raise AssertionError(f"Cannot find effects boundary for {technology}")
-        region = remainder[:boundary]
+        effects_header = re.search(r"\beffects\s*=\s*\{", remainder)
+        if not effects_header or effects_header.start() > 250:
+            raise AssertionError(f"Cannot locate effects in {technology}")
+        start = effects_header.end() - 1
+        depth = 0
+        end = None
+        for i in range(start, len(remainder)):
+            if remainder[i] == "{":
+                depth += 1
+            elif remainder[i] == "}":
+                depth -= 1
+                if depth == 0:
+                    end = i + 1
+                    break
+        if end is None:
+            raise AssertionError(f"Unclosed effects table: {technology}")
+        region = remainder[start:end]
         for product in re.findall(
             r'type\s*=\s*"unlock-recipe"\s*,\s*recipe\s*=\s*data_util\.mod_prefix\s*\.\.\s*"([a-z0-9-]+-data)"',
             region
