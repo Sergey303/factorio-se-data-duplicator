@@ -22,5 +22,10 @@ with ZipFile(output, "w", compression=ZIP_DEFLATED, compresslevel=9) as archive:
         info.compress_type = ZIP_DEFLATED
         info.create_system = 3
         info.external_attr = (0o100644 << 16)
-        archive.writestr(info, path.read_bytes(), compress_type=ZIP_DEFLATED, compresslevel=9)
+        content = path.read_bytes()
+        # Git may check out text as CRLF on Windows and LF on Linux.
+        # Normalize only known text-based mod sources, never image bytes.
+        if path.suffix.lower() in {".lua", ".json", ".cfg", ".txt"}:
+            content = content.replace(b"\r\n", b"\n")
+        archive.writestr(info, content, compress_type=ZIP_DEFLATED, compresslevel=9)
 print(output)

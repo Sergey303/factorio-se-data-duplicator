@@ -72,4 +72,7 @@ with ZipFile(package) as z:
     assert json.loads(z.read(f"{folder}/info.json")) == info
     assert z.testzip() is None
     assert all(m.date_time == (1980, 1, 1, 0, 0, 0) for m in z.infolist()), "Package must be reproducible"
+    for entry in z.namelist():
+        if Path(entry).suffix.lower() in {".lua", ".json", ".cfg", ".txt"}:
+            assert b"\r\n" not in z.read(entry), f"Unnormalized newlines: {entry}"
 print(f"PASS: {package} ({package.stat().st_size} bytes; 81 audited cards, 10 files)")
