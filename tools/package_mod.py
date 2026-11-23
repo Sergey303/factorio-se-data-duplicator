@@ -14,7 +14,7 @@ output.parent.mkdir(parents=True, exist_ok=True)
 # Constant ZIP timestamps, file permissions and sorted names produce exactly the
 # same release bytes on Windows and Linux from identical Git sources.
 with ZipFile(output, "w", compression=ZIP_STORED) as archive:
-    for path in sorted(MOD.rglob("*")):
+    for path in sorted(MOD.rglob("*"), key=lambda p: p.relative_to(MOD).as_posix()):
         if not path.is_file():
             continue
         entry = f"{folder}/{path.relative_to(MOD).as_posix()}"
@@ -25,7 +25,7 @@ with ZipFile(output, "w", compression=ZIP_STORED) as archive:
         content = path.read_bytes()
         # Git may check out text as CRLF on Windows and LF on Linux.
         # Normalize only known text-based mod sources, never image bytes.
-        if path.suffix.lower() in {".lua", ".json", ".cfg", ".txt"}:
+        if path.name == "LICENSE" or path.suffix.lower() in {".lua", ".json", ".cfg", ".txt"}:
             content = content.replace(b"\r\n", b"\n")
         archive.writestr(info, content, compress_type=ZIP_STORED)
 print(output)
