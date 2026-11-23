@@ -14,6 +14,7 @@ assert any(dep.startswith("space-exploration >=") for dep in info["dependencies"
 source = (MOD / "data-final-fixes.lua").read_text(encoding="utf-8")
 assert "shared_probability" in source
 assert "categories = {CATEGORY}" in source
+assert 'recipe = copy_name, hidden = true' in source
 assert 'local SIGNIFICANT = "se-significant-data"' in source
 assert 'and item_name ~= SIGNIFICANT' in source
 assert "category = CATEGORY" not in source

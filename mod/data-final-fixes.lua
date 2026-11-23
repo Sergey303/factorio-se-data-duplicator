@@ -220,7 +220,8 @@ for _, item_name in ipairs(cards) do
         end
       end
       if not already_present then
-        table.insert(technology.effects, {type = "unlock-recipe", recipe = copy_name})
+        -- Hide the *additional* copy-unlock icon; original SE effects stay visible.
+        table.insert(technology.effects, {type = "unlock-recipe", recipe = copy_name, hidden = true})
       end
       connected = connected + 1
     end

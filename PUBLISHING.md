@@ -40,7 +40,7 @@ After **5 seconds** (before machine speed modifiers), the machine produces **eit
 
 - **Significant data cannot be duplicated.** Neither can blank, junk or broken data cards.
 - Works in SE supercomputers I–IV, not in ordinary assembling machines.
-- Copying recipes follow existing SE research unlocks; special probe data can optionally be included.
+- Copying recipes follow existing SE research unlocks; the additional technology-effect icons are hidden. Special probe data can optionally be included.
 - Productivity, item quality upgrades and automatic recycling are disabled for these recipes.
 - Does not change the original Space Exploration recipes.
 - Startup settings control failure chance (0–100%), copying duration (1–120 s), coolant amount (1–1000), and probe card support.
@@ -74,7 +74,7 @@ The addon finds data cards from SE item prototypes. An SE update or other mods t
 
 ## Publish checklist
 
-1. Keep the actual ZIP filename `se-data-duplicator_0.1.4.zip` and its single root folder `se-data-duplicator_0.1.4/`.
+1. Keep the actual ZIP filename `se-data-duplicator_0.1.5.zip` and its single root folder `se-data-duplicator_0.1.5/`.
 2. Check for `info.json`, `thumbnail.png`, `LICENSE`, `settings.lua`, `data-final-fixes.lua` inside that folder.
 3. Select Category **Tweaks**, tags **Manufacturing** and **Fluids**, license **MIT**.
 4. Set the source and homepage URL to the GitHub repository.

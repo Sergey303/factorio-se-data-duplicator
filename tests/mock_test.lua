@@ -138,5 +138,17 @@ for _, machine in pairs(machines) do
   end
   assert(count==1)
 end
+-- Copy recipes remain unlocked, but must not clutter research effect icons.
+for tech_name, tech in pairs(data.raw.technology) do
+  for _, effect in ipairs(tech.effects or {}) do
+    if effect.type == "unlock-recipe" and effect.recipe then
+      if effect.recipe:sub(1, #prefix) == prefix then
+        assert(effect.hidden == true, "copy unlock must be hidden in " .. tech_name)
+      elseif effect.recipe == "se-atomic-data" or effect.recipe == "se-significant-data" then
+        assert(effect.hidden ~= true, "original unlock must remain visible in " .. tech_name)
+      end
+    end
+  end
+end
 assert(last_log:find("Generated " .. generated .. " copying recipes"))
 print("OK: failure=" .. failure .. "%, probes=" .. tostring(probes) .. ", recipes=" .. generated)
