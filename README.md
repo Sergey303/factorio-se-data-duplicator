@@ -1,81 +1,71 @@
 # SE Data Duplicator
 
-An optional Space Exploration addon for **Factorio 2.1 / SE 0.7.64+**.
+Unofficial Space Exploration add-on for **Factorio 2.1 / SE 0.7.64+**.
 
-**GitHub repository:** https://github.com/Sergey303/factorio-se-data-duplicator  
-**Factorio mod ID:** `se-data-duplicator`
-
-**Status:** 0.1.5 hides the extra copy-unlock icons in the technology effects panel, while preserving actual research unlocks. One normal card recipe and the exclusion of Significant data were previously confirmed in-game; all cards remain unverified.
-
-## Publishing
-
-The Mod Portal description, metadata, tags, and release instructions are in [PUBLISHING.md](PUBLISHING.md). The ZIP contains `thumbnail.png` beside `info.json`. The banner is original generated artwork, not an in-game screenshot.
-
-## Changes in 0.1.5
-
-- Hide the addon-generated copy recipe icons in technology effects using `UnlockRecipeModifier.hidden = true` (original Space Exploration effects remain visible).
-- **The technology unlocks still apply** and research progression is unchanged.
-- Add a regression check and a [technology audit](docs/unlock-audit.md) of SE 0.7.64.
-
-## Changes in 0.1.3
-
-- Exclude **Significant data** (`se-significant-data`) from recipe generation and technology unlock injection; its original Space Exploration production remains unchanged.
-- Keep normal cards, probe cards, coolant and failure settings unchanged.
-- Expand regression assertions so tests fail if Significant data becomes copyable again.
+**Current ZIP: version 0.1.5, unpublished.** The version remains 0.1.5 because it has not been released on the Factorio Mod Portal.
 
 ## Recipe
 
-Every discovered item whose prototype name matches `se-*-data` (except empty/junk/broken/**Significant data**) gets a copying recipe:
+One filled data card + one blank data card + 10 cold thermofluid (−100°C) in an SE supercomputer:
 
-- **Inputs**: 1 data card of the selected type + 1 `se-empty-data` + 10 `se-space-coolant-cold` (-100°C).
-- **Outputs**: 90% chance of **2 cards of the same type**, OR 10% chance of **2 `se-junk-data`**. Additionally, **10 `se-space-coolant-hot` (+25°C)** are **always** returned.
-- **Default duration**: 5 seconds at speed 1.
-- **Machines**: SE Supercomputers 1–4 only.
-- **No productivity, quality upgrades or recycling** for copying recipes.
+- **90% (default):** 2 copies of the original data card.
+- **10% (default):** 2 junk data cards instead.
+- **Always:** 10 thermofluid at +25°C.
+- **5 seconds**, before machine speed modifiers.
+- No productivity, quality upgrades, or automatic recycling.
 
-The failure roll uses Factorio 2.1's `shared_probability` on mutually exclusive products: it is **not** two independent random probabilities.
+The mutually exclusive outcomes use Factorio 2.1's `shared_probability`. Original SE recipes remain unchanged. Significant data, empty, junk and broken cards are excluded.
+
+## Final 0.1.5 improvements
+
+1. **81 verified names.** The SE 0.7.64 source contains 78 ordinary data items and 3 probe data items, stored in `mod/known-cards.lua`. New data names are skipped and logged unless explicitly opted in.
+2. **Primary-recipe unlocking.** A card's copy is unlocked via its *own* production recipe, not every recipe that returns the card as an unrelated by-product.
+3. **Probe data off by default.** The three probe types require an explicit startup opt-in, because rocket launches produce them in bulk.
+4. **Optional machine-tier restrictions.** When enabled, a late data card requires a more advanced supercomputer. Disabled by default to preserve the original design and existing factories.
+5. **Distinct icon.** Each copying recipe has a small overlay with two overlapping cards; original SE item icons are untouched.
+6. **Clean technology screen.** Extra copy-unlock effects use `hidden = true` without hiding original SE unlocks.
+7. **Complete diagnostics.** One `MAP card=...` line per generated recipe plus skipped-item warnings and a summary.
+8. **Safer compatibility.** Unknown or unmappable nonessential cards are skipped with warnings rather than preventing game startup. Missing SE core fluids, blank cards or machines still trigger clear errors.
 
 ### Startup settings
 
-| Setting | Default | Range |
-|---|---:|---:|
-| Failure probability | 10% | 0–100% |
-| Time per copy | 5 s | 1–120 s |
-| Coolant per copy | 10 units | 1–1000 |
-| Include probe data | Yes | On/off |
+| Option | Default | Range |
+|---|---|---|
+| Failure chance | 10% | 0–100% |
+| Copy duration | 5 s | 1–120 s |
+| Coolant per attempt | 10 | 1–1000 |
+| Copy probe data | **Off** | On/off |
+| Enforce minimum supercomputer tier | **Off** | On/off |
+| Try future unknown SE data | **Off** | On/off; needs a verified main recipe and research |
 
-One recipe is added for each matching filled-card **item prototype**, not for each alternative production recipe. `se-significant-data` is **deliberately not copied**: it is an unusually valuable resource that would make the addon unbalanced. If an original recipe has technology unlocks, those technologies also unlock the copy recipe. Cards with no matching unlock use late fallback technologies (counted in `factorio-current.log`).
+If updating from versions where probe data copying was enabled by default, **review your saved startup settings**, as Factorio may retain the previous value.
 
-### Install
+On SE 0.7.64, defaults produce **78 recipes**. With probe copying on, **81**. The log shows the real number for a modded setup.
 
-Put `se-data-duplicator_0.1.5.zip` into your Factorio `mods` directory. It contains the required root folder `se-data-duplicator_0.1.5/`. Keep the required Space Exploration dependencies installed. Enable the mod and restart Factorio after changing startup settings.
+### Supercomputer tiers
 
-### Compatibility and test status
+With the optional tier mode enabled:
 
-- Static and mocked-prototype checks are provided in `tests/`.
-- **Game-level report:** a user has confirmed a regular data-card copying recipe worked in Factorio. This is not exhaustive verification of every card, machine and unlock.
-- Compatibility applies to the named 2.1 / SE 0.7.x family; **SE 0.6 with Factorio 1.1 is not supported**.
-- A new SE item ending in `-data` is auto-detected. Items without source recipe unlocks use the latest catalogue as a conservative fallback; this should be checked after every SE update.
+- Research levels 1–4 of the four regular catalogue branches require supercomputers I–IV.
+- Deep Space 1–2 require III; Deep Space 3–4 require IV.
+- Probe data follows appropriate conservative machine categories.
+- Later supercomputers also support recipes requiring earlier tiers.
 
-### Maintainer test checklist
+With tier mode disabled, all SE supercomputers I–IV can copy cards.
 
-1. Run with Factorio 2.1 and SE 0.7.64+; inspect `factorio-current.log` for generated recipe count and fallback warnings.
-2. Check that `se-significant-data` has **no** copying recipe (its normal SE recipes remain untouched), and junk/broken/empty cards do not.
-3. Check unlocks in a clean save and a save with researched technologies.
-4. Verify each of the 4 supercomputers can select the new recipe and accept/return fluids on the right ports.
-5. Run 10,000 crafts at 10% failure, expecting failure count near 1,000 (statistical variation permitted).
-6. Check that each attempt returns exactly two cards of one type and exactly 10 units of +25°C thermofluid.
-7. Confirm no accidental productivity/quality multipliers and no recycler duplication.
+### Technology/source selection
 
-## Sources
+- Known normal data cards must have a verified **primary** source recipe with their own name and result.
+- Only technologies that unlock that primary recipe can unlock its copy. Initially enabled recipes are gated on Supercomputer I.
+- Probe data is launch output, not a crafting recipe. When enabled, the three probes are attached to conservative catalogue technologies.
+- Unknown future data names are skipped unless the setting explicitly allows them; even then an item must belong to a data subgroup and have a trusted primary source.
+- Missing optional source links are recorded as warnings.
 
-- https://mods.factorio.com/mod/space-exploration/downloads
-- https://lua-api.factorio.com/latest/types/ProductPrototypeBase.html
-- https://lua-api.factorio.com/latest/prototypes/RecipePrototype.html
-- https://tbe.gg/factorio-space-exploration/items/se-significant-data
-- https://tbe.gg/factorio-space-exploration/items/se-space-coolant-cold
+## Installation
 
-### Developing and packaging
+Put `se-data-duplicator_0.1.5.zip` in Factorio's `mods` folder without extracting it. Remove older ZIPs of this addon and restart Factorio after changing startup settings.
+
+## Verification
 
 ```sh
 python3 tests/run_mock_tests.py
@@ -83,5 +73,20 @@ python3 tools/package_mod.py
 python3 tests/check_package.py
 ```
 
-The mock tests require `liblua5.4` installed on the host. The packager needs only Python 3.
-The CI runs these checks but is **not** a substitute for loading the addon with SE in the actual game.
+The mock suite executes the actual generator with **all 81 card names** in **56 combinations** of failure percentages, probe on/off, tiered mode, and unknown-name policy. It also tests improper by-product unlocks, exclusions, modules, coolant and icon layers. It needs `liblua5.4` installed.
+
+To compare against the *installed* SE 0.7.64 ZIP without touching a save:
+
+```sh
+python3 tools/audit_se_source.py /path/to/space-exploration_0.7.64.zip --output audit.json
+```
+
+On Windows with default Factorio userdata you may omit the ZIP path. This produces a read-only source-derived inventory and original technology references.
+
+**Important:** mock tests and source scanning are not the same as a game-engine run against all enabled mods. A previous 0.1.5 version's basic copying was tested in-game; the upgraded package still needs a fresh Factorio game-load and save regression test.
+
+## Release
+
+See [PUBLISHING.md](PUBLISHING.md) for portal description and metadata. The ZIP includes `thumbnail.png` and an MIT license.
+
+Source code: https://github.com/Sergey303/factorio-se-data-duplicator

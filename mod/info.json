@@ -4,7 +4,7 @@
   "title": "SE Data Duplicator",
   "author": "Sergey303",
   "factorio_version": "2.1",
-  "description": "Copy Space Exploration data cards in supercomputers using cold thermofluid. Copies can fail; Significant data is excluded.",
+  "description": "Copy Space Exploration data cards in supercomputers using cold thermofluid. Copies may fail; Significant data and probe data (by default) are excluded. Optional machine tiers and safe source unlocking.",
   "dependencies": [
     "base >= 2.1.0",
     "space-exploration >= 0.7.64",

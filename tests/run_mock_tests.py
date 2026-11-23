@@ -28,13 +28,16 @@ lib.lua_setglobal.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
-def run(failure: int, probes: bool) -> None:
+def run(failure: int, probes: bool, tiered: bool, unknown: bool) -> None:
     state = lib.luaL_newstate()
     assert state
     try:
         lib.luaL_openlibs(state)
         lib.lua_createtable(state, 3, 0)
-        for ix, value in enumerate([str(failure), str(probes).lower(), str(ROOT / "mod/data-final-fixes.lua")], 1):
+        for ix, value in enumerate([
+            str(failure), str(probes).lower(), str(ROOT / "mod/data-final-fixes.lua"),
+            str(ROOT / "mod/known-cards.lua"), str(tiered).lower(), str(unknown).lower()
+        ], 1):
             lib.lua_pushstring(state, value.encode())
             lib.lua_rawseti(state, -2, ix)
         lib.lua_setglobal(state, b"arg")
@@ -50,5 +53,7 @@ def run(failure: int, probes: bool) -> None:
 if __name__ == "__main__":
     for p in (0, 1, 10, 49, 50, 99, 100):
         for probes in (False, True):
-            run(p, probes)
-    print("All 14 mocked Lua integration scenarios passed.")
+            for tiered in (False, True):
+                for unknown in (False, True):
+                    run(p, probes, tiered, unknown)
+    print("All 56 mocked Lua integration scenarios passed across 81 SE cards.")

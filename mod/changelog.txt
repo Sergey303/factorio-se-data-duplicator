@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.1.5
+Date: 2026-11-23
+  Features:
+    - Added data-card copying in SE supercomputers with mutually exclusive good/junk outcomes.
+    - Audited 81 SE 0.7.64 card names; probe data copying disabled by default.
+    - Optional machine-tier restrictions and unknown-card opt-in.
+    - Distinct copy recipe icons and per-card diagnostic logs.
+  Bugfixes:
+    - Corrected output thermofluid prototype and excluded Significant data.
+    - Restricted unlock propagation to the primary card recipe.
+    - Hidden additional copy icons in technology results without hiding actual unlocks.

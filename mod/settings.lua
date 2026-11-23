@@ -30,7 +30,21 @@ data:extend({
     type = "bool-setting",
     name = "se-data-duplicator-include-probes",
     setting_type = "startup",
-    default_value = true,
+    default_value = false,
     order = "d"
+  },
+  {
+    type = "bool-setting",
+    name = "se-data-duplicator-tiered-supercomputers",
+    setting_type = "startup",
+    default_value = false,
+    order = "e"
+  },
+  {
+    type = "bool-setting",
+    name = "se-data-duplicator-include-unknown-cards",
+    setting_type = "startup",
+    default_value = false,
+    order = "f"
   }
 })

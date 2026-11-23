@@ -39,11 +39,13 @@ After **5 seconds** (before machine speed modifiers), the machine produces **eit
 ## Balance and compatibility
 
 - **Significant data cannot be duplicated.** Neither can blank, junk or broken data cards.
+- Only SE 0.7.64's audited data-card types are enabled automatically; unknown new cards are skipped unless opted in.
 - Works in SE supercomputers I–IV, not in ordinary assembling machines.
-- Copying recipes follow existing SE research unlocks; the additional technology-effect icons are hidden. Special probe data can optionally be included.
+- Copying recipes follow verified primary SE recipe unlocks; hidden effects keep the research screen clean. Copying probe data is OFF by default and can be enabled explicitly.
 - Productivity, item quality upgrades and automatic recycling are disabled for these recipes.
 - Does not change the original Space Exploration recipes.
-- Startup settings control failure chance (0–100%), copying duration (1–120 s), coolant amount (1–1000), and probe card support.
+- Startup settings control failure chance (0–100%), copying duration (1–120 s), coolant amount (1–1000), probe data (off by default), optional supercomputer-tier restriction (off by default), and the unknown-card policy (off by default).
+- Copy recipes have a distinct two-card overlay on their icons. Mainstream data levels 1–4 can optionally require supercomputers I–IV.
 - Requires **Factorio 2.1** and **Space Exploration 0.7.64+**.
 
 This is an unofficial community addon for Space Exploration. The pixel-art thumbnail is illustrative, not a screenshot.
@@ -89,3 +91,7 @@ The addon finds data cards from SE item prototypes. An SE update or other mods t
 - **Recipe category already exists / duplicate recipe**: another mod registers the same internal name.
 - **Recipe exists but does not run**: unmet technology, incorrect machine, coolant fluidbox direction or connection, missing −100 °C input, or blocked +25 °C output.
 - **An expected card has no copy recipe**: it does not match the SE data-card item naming convention or belongs to a different prototype type.
+
+## Release-note for the final unpublished 0.1.5 revision
+
+Version number remains **0.1.5** until first publication. Full diagnostic mapping for 81 cards, 56 mock scenarios, read-only audit against SE 0.7.64, a distinct recipe icon, optional machine tiers and conservative unknown-card handling were added. Do not claim full live-game integration coverage until the packaged ZIP has been reloaded in Factorio.
