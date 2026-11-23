@@ -1,1 +1,6 @@
-* text=auto\n*.lua text eol=lf\n*.cfg text eol=lf\n*.json text eol=lf\n*.txt text eol=lf\n*.md text eol=lf\n
+* text=auto
+*.lua text eol=lf
+*.cfg text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+*.md text eol=lf
